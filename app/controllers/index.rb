@@ -3,21 +3,23 @@ get '/' do
   erb :index
 end
 
-# post "/" do
-#   p @word = params[:word]
-#   p @results = []
-#   Word.all.each do |x|
-#     @results << x.word if x.anagramed == @word.split("").sort.join
-#   end  
-# p @results
-#   erb :
-# end  
-
 get "/:word" do
   @word = params[:word]
-  @results = []
-  Word.all.each do |x|
-    @results << x.word if x.anagramed == @word.split("").sort.join
+  word = params[:word].split("").sort.join
+  results = Word.where(word_sorted: word)
+  @result_words = []
+  # p results
+  results.each do |word|
+    @result_words << word.word if word.word != @word
   end
   erb :index
 end  
+
+# get "/:word" do
+#   @word = params[:word]
+#   @results = []
+#   Word.all.each do |x|
+#     @results << x.word if x.anagramed == @word.split("").sort.join
+#   end
+#   erb :index
+# end 
